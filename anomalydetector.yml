@@ -6,8 +6,6 @@ Resources:
     Type: 'AWS::CE::AnomalyMonitor'
     Properties:
       MonitorName: 'ServiceCostAnomalyMonitor'
-      MonitorType: 'DIMENSIONAL'
-      MonitorDimension: 'SERVICE'
 
 Outputs:
   AnomalyServiceMonitorArn:
