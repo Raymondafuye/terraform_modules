@@ -1,0 +1,91 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  BackupVault:
+    Type: "AWS::Backup::BackupVault"
+    Properties:
+      BackupVaultName: "MyBackupVault"
+
+  BackupPlan:
+    Type: "AWS::Backup::BackupPlan"
+    Properties:
+      BackupPlan:
+        BackupPlanName: "MyBackupPlan"
+        BackupPlanRule:
+          - RuleName: "DailyBackup"
+            TargetBackupVault: !Ref BackupVault
+
+  BackupSelectionEC2:
+    Type: "AWS::Backup::BackupSelection"
+    Properties:
+      BackupPlanId: !Ref BackupPlan
+      BackupSelection:
+        SelectionName: "EC2Selection"
+        IamRoleArn: !GetAtt BackupRole.Arn
+        Resources:
+          - "arn:aws:ec2:*:*:instance/*"
+
+  BackupSelectionEBS:
+    Type: "AWS::Backup::BackupSelection"
+    Properties:
+      BackupPlanId: !Ref BackupPlan
+      BackupSelection:
+        SelectionName: "EBSSelection"
+        IamRoleArn: !GetAtt BackupRole.Arn
+        Resources:
+          - "arn:aws:ec2:*:*:volume/*"
+
+  BackupSelectionRDS:
+    Type: "AWS::Backup::BackupSelection"
+    Properties:
+      BackupPlanId: !Ref BackupPlan
+      BackupSelection:
+        SelectionName: "RDSSelection"
+        IamRoleArn: !GetAtt BackupRole.Arn
+        Resources:
+          - "arn:aws:rds:*:*:db:*"
+
+  BackupSelectionS3:
+    Type: "AWS::Backup::BackupSelection"
+    Properties:
+      BackupPlanId: !Ref BackupPlan
+      BackupSelection:
+        SelectionName: "S3Selection"
+        IamRoleArn: !GetAtt BackupRole.Arn
+        Resources:
+          - "arn:aws:s3:::*"
+
+  BackupRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service: "backup.amazonaws.com"
+            Action: "sts:AssumeRole"
+      Policies:
+        - PolicyName: "AWSBackupServiceRolePolicy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - "ec2:DescribeInstances"
+                  - "ec2:DescribeVolumes"
+                  - "rds:DescribeDBInstances"
+                  - "s3:GetBucketLocation"
+                  - "s3:ListAllMyBuckets"
+                  - "s3:ListBucket"
+                  - "s3:GetObject"
+                  - "s3:ListBucketVersions"
+                  - "s3:GetObjectVersion"
+                Resource: "*"
+
+Outputs:
+  BackupVaultName:
+    Description: "The name of the backup vault"
+    Value: !Ref BackupVault
+  BackupPlanId:
+    Description: "The ID of the backup plan"
+    Value: !Ref BackupPlan

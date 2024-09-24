@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  EBSVolumeEncryptionConfigRule:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      ConfigRuleName: EBSVolumeEncryption
+      Description: Checks whether EBS volumes are encrypted by default
+      Scope:
+        ComplianceResourceTypes:
+          - AWS::EC2::Volume
+      Source:
+        Owner: CUSTOM_LAMBDA
+        SourceIdentifier: !Sub
+          - ${LambdaArn}
+          - LambdaArn:
+              Fn::GetAtt: [EBSVolumeEncryption, Arn]
+
+Outputs:
+  ConfigRuleArn:
+    Description: ARN of the AWS Config rule for EBS volume encryption
+    Value: !Ref EBSVolumeEncryptionConfigRule
+

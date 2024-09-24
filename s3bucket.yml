@@ -1,0 +1,10 @@
+Description: "Creates S3 bucket"
+
+Resources:
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: raymond-s3
+      Tags:
+        - Key: ManagedBy
+          Value: raymond.afuye@cecureintel.com

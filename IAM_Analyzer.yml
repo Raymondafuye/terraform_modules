@@ -1,0 +1,15 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  AccessAnalyzer:
+    Type: AWS::AccessAnalyzer::Analyzer
+    Properties:
+      AnalyzerName: MyAccessAnalyzer
+      Type: ACCOUNT
+      Tags:
+        - Key: Environment
+          Value: Production
+
+Outputs:
+  AccessAnalyzerName:
+    Description: The name of the Access Analyzer
+    Value: !Ref AccessAnalyzer

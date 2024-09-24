@@ -1,0 +1,10 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  BackupVault:
+    Type: "AWS::Backup::BackupVault"
+    Properties:
+      BackupVaultName: "my_vault_to_lock44"
+      LockConfiguration:
+        MinRetentionDays: 180  # 6 months
+        MaxRetentionDays: 3650  # Example for a maximum retention of 10 years
+        ChangeableForDays: 180 # Compliance mode (configuration cannot be changed)

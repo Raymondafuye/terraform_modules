@@ -1,0 +1,9 @@
+cd ~/environment/my-repo 
+
+git log ##View the commit history to identify the last stable commit Note the hash of the stable commit you want to revert to.
+
+git reset --hard <commit-hash> ##Reset your branch to the identified commit:
+
+git push origin <branch-name> --force ##Force push the changes to the remote repository:
+
+git reset --hard abc1234 git push origin main --force ##Example

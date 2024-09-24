@@ -1,0 +1,29 @@
+Description: "pseudo Parameters"
+
+Resources:
+    S3bucket: # logical id/name
+        Type: AWS::S3::Bucket #type of resource, it should not be in a quote
+        Properties:
+          BucketName: !Join [ '-', [ !Ref 'AWS::StackName', !Ref 'AWS::Region']]
+          Tags:
+            -
+              Key: Managedby
+              Value:  raymond.afuye@cecureintel.com
+
+Outputs:
+    BucketName: #ensure the spacing are in similar pattern
+        Value: !Ref S3bucket
+    AccountId:
+        Value: !Ref 'AWS::AccountId'
+    NotificationARN:
+        Value: !Select [0, !Ref 'AWS::NotificationARNs']
+    Partition:
+        Value: !Ref 'AWS::Partition'
+    Region:
+        Value: !Ref 'AWS::Region'
+    StackId:
+        Value: !Ref 'AWS::StackId'
+    StackName:
+        Value: !Ref 'AWS::StackName'
+    URLSuffix:
+        Value: !Ref 'AWS::URLSuffix'

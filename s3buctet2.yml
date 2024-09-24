@@ -1,0 +1,34 @@
+Description: "creation of s3 with parameters and output reference"
+
+Parameters: #ensure the spelling are right with the s
+    S3bucketNew:
+        Description: Enter s3 bucket id/name
+        Type: String
+    InstanceTypeParameter:
+        Description: Select instance Type
+        Type: String
+        Default: t2.micro
+        AllowedValues:
+          - t2.micro
+          - t2.small
+          - t2.large
+        Description: Enter t2.micro, m1.small, or m1.large, Default is t2.micro
+
+Resources:
+    S3bucket: # logical id/name
+        Type: AWS::S3::Bucket #type of resource, it should not be in a quote
+        Properties:
+          BucketName: !Ref S3bucketNew
+          Tags:
+            -
+              Key: Managedby
+              Value:  raymond.afuye@cecureintel.com
+
+    Instance:
+        Type: AWS::EC2::Instance
+        Properties:
+          InstanceType: !Ref InstanceTypeParameter
+          ImageId: ami-0ada98b4347d3ffa2
+Outputs:
+    BucketName: #ensure the spacing are in similar pattern
+        Value: !Ref S3bucket

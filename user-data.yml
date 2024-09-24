@@ -1,0 +1,31 @@
+Description: "Create EC2 instance"
+
+Parameters: #ensure the spelling are right with the 's'
+    InstanceTypeParameter:
+        Description: Select instance Type
+        Type: String
+        Default: t2.micro
+        AllowedValues:
+          - t2.micro
+          - t2.small
+          - t2.large
+        Description: Enter t2.micro, m1.small, or m1.large, Default is t2.micro
+
+Resources:
+    Instance:
+        Type: AWS::EC2::Instance
+        Properties:
+          InstanceType: !Ref InstanceTypeParameter
+          ImageId: ami-051f8a213df8bc089
+          KeyName: flask
+          UserData:
+            fe::Base64:
+              !Sub
+                #!/bin/bash
+                apt-get update -y
+                apt-get install docker-compose -y
+                mkdir /home/ubuntu/sample
+          Tags:
+            -
+              Key: Managedby
+              Value:  raymond.afuye@cecureintel.com

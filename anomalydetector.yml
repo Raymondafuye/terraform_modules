@@ -1,0 +1,16 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'AWS Cost Anomaly Service Monitor'
+
+Resources:
+  AnomalyServiceMonitor:
+    Type: 'AWS::CE::AnomalyMonitor'
+    Properties:
+      MonitorName: 'ServiceCostAnomalyMonitor'
+      MonitorType: 'DIMENSIONAL'
+      MonitorDimension: 'SERVICE'
+
+Outputs:
+  AnomalyServiceMonitorArn:
+    Description: 'ARN of the Anomaly Service Monitor'
+    Value: !Ref AnomalyServiceMonitor
+
